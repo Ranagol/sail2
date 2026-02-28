@@ -51,6 +51,25 @@ jobs:
           php-version: 8.5
           extensions: mbstring, bcmath, pdo_mysql
           coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 # We must create a .env. However, the real .env is not committed to the repository.
 # It is unavailable. So, we copy the .env.example to .env. The trick is the the workflow
 # enviroment will override the values in .env, so we can set the database connection details
@@ -64,14 +83,8 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
-      - name: Install Laravel Breeze
-        run: composer require laravel/breeze --dev
-
-      - name: Install Breeze scaffolding
-        run: php artisan breeze:install blade --no-interaction
-
       - name: Install NPM dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build assets
         run: npm run build
