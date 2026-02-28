@@ -64,6 +64,18 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
+      - name: Install Laravel Breeze
+        run: composer require laravel/breeze --dev
+
+      - name: Install Breeze scaffolding
+        run: php artisan breeze:install
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
 # Tell here the workflow to wait 5 s for the MySQL service to be fully ready before running the
 # migrations and tests. This is a small buffer to ensure that the MySQL service is up and running
 # before we try to connect to it.
