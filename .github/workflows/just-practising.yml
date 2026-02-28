@@ -48,7 +48,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.5
           extensions: mbstring, bcmath, pdo_mysql
           coverage: none
 # We must create a .env. However, the real .env is not committed to the repository.
