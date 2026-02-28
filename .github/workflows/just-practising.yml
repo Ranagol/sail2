@@ -68,7 +68,7 @@ jobs:
         run: composer require laravel/breeze --dev
 
       - name: Install Breeze scaffolding
-        run: php artisan breeze:install
+        run: php artisan breeze:install blade --no-interaction
 
       - name: Install NPM dependencies
         run: npm install
