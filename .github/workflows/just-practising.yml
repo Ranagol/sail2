@@ -31,6 +31,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
+
 # This is a health check for the MySQL service
 # mysqladmin → MySQL admin CLI tool
 # ping → Check if the MySQL server is alive
@@ -56,23 +57,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+# This automatically caches npm dependencies based on the package-lock.json file. No need for actions/cache.
+# Getting the npm packages from cache also happens here.
           cache: npm
           cache-dependency-path: package-lock.json
 
       - name: Get Composer cache directory
         id: composer-cache
+# prints the path of Composer’s cache directory. actions/cache will this way know where to cache the
+# the Composer dependencies. This info will be now in the steps.composer-cache.outputs.dir
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
+# Find the cached packages here, in this path
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+
+
 # We must create a .env. However, the real .env is not committed to the repository.
 # It is unavailable. So, we copy the .env.example to .env. The trick is the the workflow
-# enviroment will override the values in .env, so we can set the database connection details
+# environment will override the values in .env, so we can set the database connection details
 # in the workflow env and they will be used when running the tests.
       - name: Copy .env
         run: cp .env.example .env
@@ -106,7 +112,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Fake Deploy
