@@ -12,6 +12,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test-deploy', function () {
+    return 'Deployment works!';
+});
+
 /**
  * Writing data into session
  */
