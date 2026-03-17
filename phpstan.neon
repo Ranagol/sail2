@@ -1,0 +1,14 @@
+# This loads Larastan so PHPStan understands Laravel features like Eloquent models, facades, and more
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+
+    # Tells PHPStan what directories to analyze.
+    paths:
+        - app
+        - routes
+        - database
+
+    # Sets the level of strictness for PHPStan.
+    # level: 5

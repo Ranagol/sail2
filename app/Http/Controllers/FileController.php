@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\File;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
     // Show list of files for the logged-in user
-    public function index()
+    public function index(): View
     {
         $files = File::where('user_id', Auth::id())->get();
 
@@ -18,13 +21,13 @@ class FileController extends Controller
     }
 
     // Show upload form
-    public function create()
+    public function create(): View
     {
         return view('files.create');
     }
 
     // Handle file upload
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         // Validate file
         $request->validate([
@@ -49,7 +52,7 @@ class FileController extends Controller
     }
 
     // Download file
-    public function download($id)
+    public function download(int $id): StreamedResponse
     {
         $file = File::findOrFail($id);
 
@@ -62,7 +65,7 @@ class FileController extends Controller
     }
 
     // Delete file
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $file = File::findOrFail($id);
 
