@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RedisCacheController;
 use App\Http\Controllers\SessionDemoController;
 use App\Jobs\SendTestEmailJob;
-use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -41,30 +40,7 @@ Route::middleware('throttle:3,1')->get('/rate-test', function () {
  * measuring the time to get these 100 users for the first request (that is obviously not cached)
  * and then for the second request (that is cached).
  */
-Route::get('/redis-testing', function () {
-
-    // $users = Cache::remember('users.all', 600, function () {
-    //     return User::all();
-    // });
-
-    // // return $users as JSON response
-    // return response()->json($users);
-
-    $start = microtime(true);
-
-    // Cache the users for 60 seconds
-    $users = Cache::remember('users.all', 60, function () {
-        return User::all();  // Fetch all users from the database
-    });
-
-    $executionTime = microtime(true) - $start;  // Measure elapsed time
-
-    return response()->json([
-        'execution_time_seconds' => $executionTime,
-        'users_count' => $users->count(),
-    ]);
-
-});
+Route::get('/redis-testing', [RedisCacheController::class, 'index'])->name('redis.demo');
 
 /**
  * Here we want to send 100 test emails. We dispatch a job for each email, and the job will handle
