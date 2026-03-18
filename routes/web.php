@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QueueDemoController;
 use App\Http\Controllers\RedisCacheController;
 use App\Http\Controllers\SessionDemoController;
-use App\Jobs\SendTestEmailJob;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,19 +34,10 @@ Route::middleware('throttle:3,1')->get('/rate-test', function () {
 Route::get('/redis-testing', [RedisCacheController::class, 'index'])->name('redis.demo');
 
 /**
- * Here we want to send 100 test emails. We dispatch a job for each email, and the job will handle
- * the actual sending of the email. This way we can test the queue system.
- *
- * Trigger the worker with this command:    sail artisan queue:work.
+ * Queue demo — dispatch jobs, view pending/failed counts, and learn how queues work.
  */
-Route::get('/queue-testing', function () {
-
-    for ($i = 0; $i < 100; $i++) {
-        SendTestEmailJob::dispatch();
-    }
-
-    return 'Test email job dispatched!';
-});
+Route::get('/queue-testing', [QueueDemoController::class, 'index'])->name('queue.demo');
+Route::post('/queue-testing', [QueueDemoController::class, 'dispatch'])->name('queue.dispatch');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
