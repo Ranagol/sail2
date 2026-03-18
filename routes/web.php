@@ -2,34 +2,30 @@
 
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SessionDemoController;
 use App\Jobs\SendTestEmailJob;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/test-deploy', function () {
-    return 'Deployment works!';
 });
 
 /**
  * Writing data into session
  */
-Route::get('/session-set', function () {
-    session(['demo' => 'hello']);
-    return "Session value set!";
-});
+Route::get('/session-set', [SessionDemoController::class, 'set'])->name('session.set');
 
 /**
  * Getting data from the session
  */
-Route::get('/session-get', function () {
-    return session('demo', 'not found');
-});
+Route::get('/session-get', [SessionDemoController::class, 'get'])->name('session.get');
+
+/**
+ * Deleting data from the session
+ */
+Route::post('/session-delete', [SessionDemoController::class, 'delete'])->name('session.delete');
 
 /**
  * Rate limitin example. The url /rate-test can be requested only 3 times in 1 minute, from the same
@@ -37,7 +33,7 @@ Route::get('/session-get', function () {
  * is how this rate limiting works.
  */
 Route::middleware('throttle:3,1')->get('/rate-test', function () {
-    return "OK";
+    return 'OK';
 });
 
 /**
@@ -85,8 +81,6 @@ Route::get('/queue-testing', function () {
     return 'Test email job dispatched!';
 });
 
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -97,17 +91,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //File upload download routes
-     Route::get('/files', [FileController::class, 'index'])->name('files.index');
+    // File upload download routes
+    Route::get('/files', [FileController::class, 'index'])->name('files.index');
     Route::get('/files/create', [FileController::class, 'create'])->name('files.create');
     Route::post('/files', [FileController::class, 'store'])->name('files.store');
     Route::get('/files/download/{id}', [FileController::class, 'download'])->name('files.download');
     Route::delete('/files/{id}', [FileController::class, 'destroy'])->name('files.destroy');
 
-
 });
 
 require __DIR__.'/auth.php';
-
-
-
