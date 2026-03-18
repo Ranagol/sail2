@@ -1,6 +1,6 @@
 <x-guest-layout>
     @php
-        $hasValue = $sessionValue !== 'not found';
+        $hasValue = $sessionValue !== null;
     @endphp
 
     <div class="w-full space-y-6">
@@ -19,14 +19,19 @@
                 @endif
 
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <a href="{{ route('session.set') }}" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-sky-500 dark:hover:bg-sky-400">
-                        Write "hello" to session
-                    </a>
-                    <a href="{{ route('session.get') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
+                    <form action="{{ route('session.demo') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="_action" value="set">
+                        <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-sky-500 dark:hover:bg-sky-400">
+                            Write "hello" to session
+                        </button>
+                    </form>
+                    <a href="{{ route('session.demo') }}" class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
                         Refresh session value
                     </a>
-                    <form action="{{ route('session.delete') }}" method="POST">
+                    <form action="{{ route('session.demo') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="_action" value="delete">
                         <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-900/40 dark:text-rose-200 dark:hover:bg-rose-900/60">
                             Delete session value
                         </button>
@@ -43,7 +48,7 @@
                         ])>
                             {{ $hasValue ? 'found' : 'empty' }}
                         </span>
-                        <code class="rounded-md bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-700 dark:text-slate-100">{{ $sessionValue }}</code>
+                        <code class="rounded-md bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-800 dark:bg-slate-700 dark:text-slate-100">{{ $sessionValue ?? 'not set' }}</code>
                     </div>
                 </div>
             </div>

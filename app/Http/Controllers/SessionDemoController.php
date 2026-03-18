@@ -8,28 +8,23 @@ use Illuminate\View\View;
 
 class SessionDemoController extends Controller
 {
-    public function set(Request $request): RedirectResponse
-    {
-        $request->session()->put('demo', 'hello');
-
-        return redirect()
-            ->route('session.get')
-            ->with('status', 'Session value stored successfully.');
-    }
-
-    public function get(Request $request): View
+    public function index(Request $request): View
     {
         return view('session.demo', [
-            'sessionValue' => $request->session()->get('demo', 'not found'),
+            'sessionValue' => $request->session()->get('demo'),
         ]);
     }
 
-    public function delete(Request $request): RedirectResponse
+    public function handle(Request $request): RedirectResponse
     {
-        $request->session()->forget('demo');
+        if ($request->input('_action') === 'set') {
+            $request->session()->put('demo', 'hello');
+            $status = 'Session value stored successfully.';
+        } else {
+            $request->session()->forget('demo');
+            $status = 'Session value deleted successfully.';
+        }
 
-        return redirect()
-            ->route('session.get')
-            ->with('status', 'Session value deleted successfully.');
+        return redirect()->route('session.demo')->with('status', $status);
     }
 }

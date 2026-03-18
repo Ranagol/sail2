@@ -12,19 +12,10 @@ Route::get('/', function () {
 });
 
 /**
- * Writing data into session
+ * Session demo — one URL for displaying, setting, and deleting a session value.
  */
-Route::get('/session-set', [SessionDemoController::class, 'set'])->name('session.set');
-
-/**
- * Getting data from the session
- */
-Route::get('/session-get', [SessionDemoController::class, 'get'])->name('session.get');
-
-/**
- * Deleting data from the session
- */
-Route::post('/session-delete', [SessionDemoController::class, 'delete'])->name('session.delete');
+Route::get('/session-testing', [SessionDemoController::class, 'index'])->name('session.demo');
+Route::post('/session-testing', [SessionDemoController::class, 'handle']);
 
 /**
  * Rate limitin example. The url /rate-test can be requested only 3 times in 1 minute, from the same
