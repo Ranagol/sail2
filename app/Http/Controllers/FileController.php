@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class FileController extends Controller
 {
     // Show list of files for the logged-in user
+    // This is a new comment for testing git hooks pre-commit optimization
     public function index(): View
     {
         $files = File::where('user_id', Auth::id())->get();
