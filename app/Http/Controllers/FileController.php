@@ -36,7 +36,7 @@ class FileController extends Controller
 
         // Store file in user-specific folder
         $path = $request->file('file')->store(
-            'uploads/' . Auth::id()
+            'uploads/'.Auth::id()
         );
 
         // Save file info in database

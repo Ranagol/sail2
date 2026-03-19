@@ -2,10 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Mail\TestMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\TestMail;
 
 class SendTestEmailJob implements ShouldQueue
 {
@@ -24,6 +24,6 @@ class SendTestEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to('test@example.com')->send(new TestMail());
+        Mail::to('test@example.com')->send(new TestMail);
     }
 }
