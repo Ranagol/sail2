@@ -96,4 +96,37 @@ class ProfileTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_password_is_required_to_delete_account(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->from('/profile')
+            ->delete('/profile', [
+                'password' => '',
+            ]);
+
+        $response
+            ->assertSessionHasErrorsIn('userDeletion', ['password' => 'The password field is required.'])
+            ->assertRedirect('/profile');
+
+        $this->assertNotNull($user->fresh());
+    }
+
+    public function test_session_is_invalidated_on_account_deletion(): void
+    {
+        $user = User::factory()->create();
+        $previousToken = 'known-csrf-token';
+
+        $response = $this
+            ->actingAs($user)
+            ->withSession(['_token' => $previousToken, 'demo' => 'value'])
+            ->delete('/profile', ['password' => 'password']);
+
+        $response->assertSessionMissing('demo');
+        $this->assertNotSame($previousToken, csrf_token());
+        $this->assertNotEmpty(csrf_token());
+    }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -62,5 +63,37 @@ class RedisCacheControllerTest extends TestCase
 
         $this->assertTrue(Cache::has('users.all'));
         $this->assertNotEquals(collect(['stale']), Cache::get('users.all'));
+    }
+
+    public function test_redis_demo_passes_valid_numeric_view_data(): void
+    {
+        User::factory()->count(3)->create();
+
+        $response = $this->get(route('redis.demo'));
+
+        $response->assertViewHas('usersCount', 3);
+        $response->assertViewHas('firstDurationMs', fn ($v) => $v > 0 && $v < 30000);
+        $response->assertViewHas('secondDurationMs', fn ($v) => $v > 0 && $v < 30000);
+        $response->assertViewHas('speedupFactor', fn ($v) => $v !== null && $v > 0);
+    }
+
+    public function test_users_are_cached_with_sixty_second_ttl(): void
+    {
+        User::factory()->count(3)->create();
+
+        $writtenEvents = [];
+        $this->app->make('events')->listen(
+            KeyWritten::class,
+            function ($event) use (&$writtenEvents): void {
+                if ($event->key === 'users.all') {
+                    $writtenEvents[] = $event;
+                }
+            }
+        );
+
+        $this->get(route('redis.demo'))->assertOk();
+
+        $this->assertCount(1, $writtenEvents);
+        $this->assertEquals(60, $writtenEvents[0]->seconds);
     }
 }

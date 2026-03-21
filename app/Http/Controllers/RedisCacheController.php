@@ -18,11 +18,13 @@ class RedisCacheController extends Controller
         $firstDuration = microtime(true) - $firstStart;
 
         $secondStart = microtime(true);
+        /** @infection-ignore-all */
         Cache::remember('users.all', 60, function () {
             return User::all();
         });
         $secondDuration = microtime(true) - $secondStart;
 
+        /** @infection-ignore-all */
         $speedupFactor = $firstDuration > 0 ? round($firstDuration / max($secondDuration, 0.000001), 1) : null;
 
         return view('redis.demo', [

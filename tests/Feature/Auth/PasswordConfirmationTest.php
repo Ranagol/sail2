@@ -27,8 +27,10 @@ class PasswordConfirmationTest extends TestCase
             'password' => 'password',
         ]);
 
-        $response->assertRedirect();
+        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertHeader('Location', route('dashboard', absolute: true));
         $response->assertSessionHasNoErrors();
+        $this->assertNotNull(session('auth.password_confirmed_at'));
     }
 
     public function test_password_is_not_confirmed_with_invalid_password(): void
@@ -39,6 +41,8 @@ class PasswordConfirmationTest extends TestCase
             'password' => 'wrong-password',
         ]);
 
-        $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors([
+            'password' => __('auth.password'),
+        ]);
     }
 }

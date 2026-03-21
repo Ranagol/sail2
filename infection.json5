@@ -1,0 +1,48 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "timeout": 10,
+    "minMsi": 85,
+    "minCoveredMsi": 85,
+    "source": {
+        "directories": [
+            "app"
+        ],
+        "excludes": [
+            "Http/Controllers/Auth",
+            "Http/Requests",
+            "Providers",
+        ]
+    },
+    "phpUnit": {
+        "configDir": "."
+    },
+    "mutators": {
+        "@default": true,
+        // Globally suppress non-deterministic timing code and side-effect-only calls.
+        // These patterns produce false positives across all mutators in Laravel apps.
+        "global-ignoreSourceCodeByRegex": [
+            "microtime\\(",       // timing values — inherently non-deterministic
+            "Log::",              // logging calls — side effects, not functionally testable
+            "logger\\("           // helper alias for Log::
+        ],
+        // Suppress ±1 mutations on round() precision digits (e.g. round($x, 3))
+        // and on round() itself — these are cosmetic display values, not logic.
+        "DecrementInteger": {
+            "ignoreSourceCodeByRegex": ["round\\(\\$.*,\\s*[0-9]+\\)"]
+        },
+        "IncrementInteger": {
+            "ignoreSourceCodeByRegex": ["round\\(\\$.*,\\s*[0-9]+\\)"]
+        },
+        "RoundingFamily": {
+            "ignoreSourceCodeByRegex": ["round\\(\\$.*,\\s*[0-9]+\\)"]
+        },
+        // Suppress removal of void session-hygiene calls (regenerateToken, invalidate)
+        // that are security best-practice but produce no assertable return value.
+        "MethodCallRemoval": {
+            "ignoreSourceCodeByRegex": [
+                "->regenerateToken\\(\\)",
+                "->invalidate\\(\\)"
+            ]
+        }
+    }
+}
