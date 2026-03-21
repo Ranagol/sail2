@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-demo-layout>
     @php
         $hasValue = $sessionValue !== null;
     @endphp
@@ -63,4 +63,4 @@
             </a>
         </div>
     </div>
-</x-guest-layout>
+</x-demo-layout>

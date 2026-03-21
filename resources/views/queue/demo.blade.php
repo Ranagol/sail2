@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-demo-layout>
     <div class="w-full space-y-6">
 
         {{-- Header --}}
@@ -209,4 +209,4 @@
             </a>
         </div>
     </div>
-</x-guest-layout>
+</x-demo-layout>
