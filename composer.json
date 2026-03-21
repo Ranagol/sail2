@@ -25,6 +25,7 @@
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
+        "phpmd/phpmd": "^2.15",
         "phpunit/phpunit": "^11.5.3",
         "psalm/plugin-laravel": "^3.1",
         "psalm/plugin-phpunit": "^0.19.6",
@@ -61,6 +62,9 @@
         ],
         "analyse": [
             "phpstan analyse --memory-limit=512M"
+        ],
+        "analyse:phpmd": [
+            "php vendor/bin/phpmd app,database text phpmd.xml"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
