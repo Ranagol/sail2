@@ -18,7 +18,7 @@ class RedisCacheController extends Controller
         $firstDuration = microtime(true) - $firstStart;
 
         $secondStart = microtime(true);
-        $usersCachedLoad = Cache::remember('users.all', 60, function () {
+        Cache::remember('users.all', 60, function () {
             return User::all();
         });
         $secondDuration = microtime(true) - $secondStart;
@@ -27,8 +27,8 @@ class RedisCacheController extends Controller
 
         return view('redis.demo', [
             'usersCount' => $usersFirstLoad->count(),
-            'firstDurationMs' => round($firstDuration * 1000, 3),
-            'secondDurationMs' => round($secondDuration * 1000, 3),
+            'firstDurationMs' => round($firstDuration * 1000.0, 3),
+            'secondDurationMs' => round($secondDuration * 1000.0, 3),
             'speedupFactor' => $speedupFactor,
         ]);
     }

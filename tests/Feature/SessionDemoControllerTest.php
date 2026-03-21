@@ -6,6 +6,7 @@ use Tests\TestCase;
 
 class SessionDemoControllerTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
