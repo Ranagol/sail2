@@ -86,14 +86,29 @@ class RedisCacheControllerTest extends TestCase
 
     public function test_redis_demo_passes_valid_numeric_view_data(): void
     {
+        // We need users in db, so we can measure how fast we can get them.
         User::factory()->count(3)->create();
+
+        // The user must be authenticated, because the controller has auth middleware.
         $this->actingAs(User::query()->firstOrFail());
 
+        // We 'visit' the page, and we check that the view has the correct data types and values.
         $response = $this->get(route('redis.demo'));
 
         $response->assertViewHas('usersCount', 3);
+
+        // Value is positive and less than 30 seconds (30000 ms),
         $response->assertViewHas('firstDurationMs', fn ($v) => $v > 0 && $v < 30000);
+
+        // Value is positive and less than 30 seconds (30000 ms),
         $response->assertViewHas('secondDurationMs', fn ($v) => $v > 0 && $v < 30000);
+
+        // Check if the firstDurationMs is greater than the secondDurationMs. (it should be)
+        $firstDurationMs = $response->viewData('firstDurationMs');
+        $secondDurationMs = $response->viewData('secondDurationMs');
+        $this->assertGreaterThan($secondDurationMs, $firstDurationMs);
+
+        // It is not null, and it is a positive number (it should be).
         $response->assertViewHas('speedupFactor', fn ($v) => $v !== null && $v > 0);
     }
 

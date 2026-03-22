@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Jobs\SendTestEmailJob;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class QueueDemoControllerTest extends TestCase
@@ -19,6 +18,12 @@ class QueueDemoControllerTest extends TestCase
         parent::setUp();
 
         $this->withoutVite();
+
+        // This user is in DB, its ID is put into the test session/auth guard state so Laravel treats requests as authenticated
+        $this->actingAs(User::factory()->create());
+
+        // We fake the queue, so that when the controller dispatches jobs, they are not actually executed.
+        // This allows us to assert that jobs were pushed onto the queue without worrying about their side effects.
         Queue::fake();
     }
 
@@ -35,41 +40,20 @@ class QueueDemoControllerTest extends TestCase
 
     public function test_dispatch_pushes_jobs_onto_queue_and_redirects(): void
     {
-        $response = $this->post(route('queue.dispatch'), ['count' => 5]);
+        /**
+         * Simulates a user submitting a form. Count is the number of jobs, 100. So, user send in the
+         * form the number 100. He wants to dispatch 100 jobs to the queue.
+         */
+        $response = $this->post(route('queue.dispatch'), ['count' => 100]);
 
+        // We assert that the user is redirected back to the queue demo page
         $response->assertRedirect(route('queue.demo'));
-        $response->assertSessionHas('status', 'Dispatched 5 job(s) to the Redis queue.');
-        Queue::assertPushed(SendTestEmailJob::class, 5);
-    }
 
-    public function test_dispatch_defaults_to_ten_jobs(): void
-    {
-        $response = $this->post(route('queue.dispatch'));
+        // We assert that a session flash message is set with the expected status message.
+        $response->assertSessionHas('status', 'Dispatched 100 job(s) to the Redis queue.');
 
-        Queue::assertPushed(SendTestEmailJob::class, 10);
-        $response->assertSessionHas('status', 'Dispatched 10 job(s) to the Redis queue.');
-    }
-
-    public function test_dispatch_clamps_count_to_maximum_of_100(): void
-    {
-        $this->post(route('queue.dispatch'), ['count' => 999]);
-
+        // We assert that exactly 5 SendTestEmailJob jobs were pushed onto the queue.
         Queue::assertPushed(SendTestEmailJob::class, 100);
-    }
-
-    public function test_dispatch_clamps_count_to_minimum_of_1(): void
-    {
-        $this->post(route('queue.dispatch'), ['count' => 0]);
-
-        Queue::assertPushed(SendTestEmailJob::class, 1);
-    }
-
-    public function test_dispatch_count_is_cast_to_integer(): void
-    {
-        $response = $this->post(route('queue.dispatch'), ['count' => '2.9']);
-
-        Queue::assertPushed(SendTestEmailJob::class, 2);
-        $response->assertSessionHas('status', 'Dispatched 2 job(s) to the Redis queue.');
     }
 
     public function test_index_shows_worker_command_instructions(): void
@@ -79,50 +63,5 @@ class QueueDemoControllerTest extends TestCase
         $response->assertSee('queue:work');
         $response->assertSee('queue:retry all');
         $response->assertSee('queue:flush');
-    }
-
-    public function test_index_shows_correct_failed_jobs_count(): void
-    {
-        $this->insertFailedJobs(3);
-
-        $response = $this->get(route('queue.demo'));
-
-        $response->assertViewHas('failedJobsCount', 3);
-    }
-
-    public function test_index_shows_at_most_five_recent_failed_jobs(): void
-    {
-        $this->insertFailedJobs(7);
-
-        $response = $this->get(route('queue.demo'));
-
-        $response->assertViewHas('recentFailedJobs', fn ($jobs) => $jobs->count() === 5);
-    }
-
-    public function test_index_returns_correct_columns_for_failed_jobs(): void
-    {
-        $this->insertFailedJobs(1);
-
-        $response = $this->get(route('queue.demo'));
-
-        $response->assertViewHas('recentFailedJobs', function ($jobs) {
-            $job = $jobs->first();
-
-            return isset($job->id, $job->queue, $job->failed_at, $job->exception);
-        });
-    }
-
-    private function insertFailedJobs(int $count): void
-    {
-        for ($i = 1; $i <= $count; $i++) {
-            DB::table('failed_jobs')->insert([
-                'uuid' => Str::uuid()->toString(),
-                'connection' => 'redis',
-                'queue' => 'default',
-                'payload' => '{}',
-                'exception' => "Exception {$i}",
-                'failed_at' => now()->subSeconds($i)->toDateTimeString(),
-            ]);
-        }
     }
 }

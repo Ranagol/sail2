@@ -42,20 +42,11 @@
                 {{-- Dispatch form --}}
                 <div class="rounded-xl border border-slate-200 bg-slate-50 px-5 py-5 dark:border-slate-700 dark:bg-slate-900/60">
                     <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Dispatch jobs</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Choose how many <code class="rounded bg-slate-200 px-1 dark:bg-slate-700">SendTestEmailJob</code> jobs to push onto the queue.</p>
+                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Dispatch 100 <code class="rounded bg-slate-200 px-1 dark:bg-slate-700">SendTestEmailJob</code> jobs to the queue with one click.</p>
                     <form action="{{ route('queue.dispatch') }}" method="POST" class="mt-4 flex flex-wrap items-center gap-3">
                         @csrf
-                        <div class="flex items-center gap-2">
-                            <label for="count" class="text-sm font-medium text-slate-600 dark:text-slate-300">Number of jobs</label>
-                            <select id="count" name="count" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-violet-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100">
-                                <option value="1">1</option>
-                                <option value="5">5</option>
-                                <option value="10" selected>10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                        </div>
+                        <input type="hidden" name="count" value="100">
+                        <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Dispatches 100 jobs per click.</p>
                         <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-500 dark:hover:bg-violet-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
