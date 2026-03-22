@@ -26,7 +26,7 @@ class SessionDemoControllerTest extends TestCase
 
     public function test_set_action_stores_value_and_redirects_back(): void
     {
-        $response = $this->post(route('session.demo'), ['_action' => 'set']);
+        $response = $this->post(route('session.store'));
 
         $response->assertRedirect(route('session.demo'));
         $response->assertSessionHas('demo', 'hello');
@@ -42,7 +42,7 @@ class SessionDemoControllerTest extends TestCase
     {
         $this->withSession(['demo' => 'hello']);
 
-        $response = $this->post(route('session.demo'), ['_action' => 'delete']);
+        $response = $this->delete(route('session.destroy'));
 
         $response->assertRedirect(route('session.demo'));
         $response->assertSessionMissing('demo');
