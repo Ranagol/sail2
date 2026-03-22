@@ -22,7 +22,9 @@ class RedisCacheControllerTest extends TestCase
 
     public function test_redis_demo_page_loads_successfully(): void
     {
-        User::factory()->count(3)->create();
+        // We create 25 users in the test db, because we measure the time it takes to retrieve all users.
+        User::factory()->count(25)->create();
+        $this->actingAs(User::query()->firstOrFail());
 
         $response = $this->get(route('redis.demo'));
 
@@ -34,17 +36,19 @@ class RedisCacheControllerTest extends TestCase
 
     public function test_redis_demo_page_shows_user_count(): void
     {
-        User::factory()->count(5)->create();
+        User::factory()->count(25)->create();
+        $this->actingAs(User::query()->firstOrFail());
 
         $response = $this->get(route('redis.demo'));
 
         $response->assertOk();
-        $response->assertSee('5 users');
+        $response->assertSee('25 users');
     }
 
     public function test_redis_demo_page_shows_timing_values(): void
     {
         User::factory()->count(3)->create();
+        $this->actingAs(User::query()->firstOrFail());
 
         $response = $this->get(route('redis.demo'));
 
@@ -56,18 +60,34 @@ class RedisCacheControllerTest extends TestCase
 
     public function test_redis_demo_clears_cache_before_first_request(): void
     {
+        // Create new fresh users
         User::factory()->count(3)->create();
+        $this->actingAs(User::query()->firstOrFail());
+
+        /**
+         * Creates a collection, that contains 'stale' string. This symbolises stale data. We insert
+         * this stale data into cache. This should be deleted by the controller before the first
+         * request. We have now in Cache: users.all => ['stale']
+         */
         Cache::put('users.all', collect(['stale']), 60);
 
+        // User 'visits' the page, which should trigger the cache clearing and data retrieval.
         $this->get(route('redis.demo'));
 
+        // Check if the Cache has the 'users.all'
         $this->assertTrue(Cache::has('users.all'));
+
+        // Check that Cache does not have this: users.all => ['stale']
         $this->assertNotEquals(collect(['stale']), Cache::get('users.all'));
+
+        // Check that Cache has the correct data: users.all => collection of 3 users.
+        $this->assertEquals(3, Cache::get('users.all')->count());
     }
 
     public function test_redis_demo_passes_valid_numeric_view_data(): void
     {
         User::factory()->count(3)->create();
+        $this->actingAs(User::query()->firstOrFail());
 
         $response = $this->get(route('redis.demo'));
 
@@ -80,6 +100,7 @@ class RedisCacheControllerTest extends TestCase
     public function test_users_are_cached_with_sixty_second_ttl(): void
     {
         User::factory()->count(3)->create();
+        $this->actingAs(User::query()->firstOrFail());
 
         $writtenEvents = [];
         $this->app->make('events')->listen(

@@ -11,35 +11,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/**
- * Session demo — one URL for displaying, setting, and deleting a session value.
- */
-Route::get('/session-testing', [SessionDemoController::class, 'index'])->name('session.demo');
-Route::post('/session-testing', [SessionDemoController::class, 'store'])->name('session.store');
-Route::delete('/session-testing', [SessionDemoController::class, 'destroy'])->name('session.destroy');
-
-/**
- * Rate limitin example. The url /rate-test can be requested only 3 times in 1 minute, from the same
- * IP addres. Then returns OK response. 4. time a 429 error (too many requests) is returned. This
- * is how this rate limiting works.
- */
-Route::middleware('throttle:3,1')->get('/rate-test', function () {
-    return 'OK';
-});
-
-/**
- * There should be 100 Users in DB. If not, run php artisan db:seed. We can test Redis, by
- * measuring the time to get these 100 users for the first request (that is obviously not cached)
- * and then for the second request (that is cached).
- */
-Route::get('/redis-testing', [RedisCacheController::class, 'index'])->name('redis.demo');
-
-/**
- * Queue demo — dispatch jobs, view pending/failed counts, and learn how queues work.
- */
-Route::get('/queue-testing', [QueueDemoController::class, 'index'])->name('queue.demo');
-Route::post('/queue-testing', [QueueDemoController::class, 'dispatch'])->name('queue.dispatch');
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
@@ -49,6 +20,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /**
+     * Session demo — one URL for displaying, setting, and deleting a session value.
+     */
+    Route::get('/session-testing', [SessionDemoController::class, 'index'])->name('session.demo');
+    Route::post('/session-testing', [SessionDemoController::class, 'store'])->name('session.store');
+    Route::delete('/session-testing', [SessionDemoController::class, 'destroy'])->name('session.destroy');
+
+    /**
+     * There should be 100 Users in DB. If not, run php artisan db:seed. We can test Redis, by
+     * measuring the time to get these 100 users for the first request (that is obviously not cached)
+     * and then for the second request (that is cached).
+     */
+    Route::get('/redis-testing', [RedisCacheController::class, 'index'])->name('redis.demo');
+
+    /**
+     * Queue demo — dispatch jobs, view pending/failed counts, and learn how queues work.
+     */
+    Route::get('/queue-testing', [QueueDemoController::class, 'index'])->name('queue.demo');
+    Route::post('/queue-testing', [QueueDemoController::class, 'dispatch'])->name('queue.dispatch');
 
     // File upload download routes
     Route::get('/files', [FileController::class, 'index'])->name('files.index');

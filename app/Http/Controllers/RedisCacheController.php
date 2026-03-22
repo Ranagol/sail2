@@ -10,6 +10,9 @@ class RedisCacheController extends Controller
 {
     public function index(): View
     {
+        /**
+         * This is the first request (without Redis cache). It will be slower.
+         */
         $firstStart = microtime(true);
         Cache::forget('users.all');
         $usersFirstLoad = Cache::remember('users.all', 60, function () {
@@ -17,7 +20,11 @@ class RedisCacheController extends Controller
         });
         $firstDuration = microtime(true) - $firstStart;
 
+        /**
+         * This is the second request (with Redis cache). It should be much faster.
+         */
         $secondStart = microtime(true);
+
         /** @infection-ignore-all */
         Cache::remember('users.all', 60, function () {
             return User::all();
