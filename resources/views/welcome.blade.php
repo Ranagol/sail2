@@ -125,6 +125,31 @@
                         </div>
                     </div>
                 </a>
+
+                {{-- Database / Posts CRUD --}}
+                <a href="{{ route('posts.index') }}" class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
+                    <div class="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-600 px-6 py-5">
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"/>
+                            </svg>
+                        </span>
+                        <h2 class="mt-3 text-lg font-bold text-white">Database Demo</h2>
+                    </div>
+                    <div class="flex flex-1 flex-col px-6 py-5">
+                        <p class="text-sm text-slate-600 dark:text-slate-300">
+                            Generate 10 demo posts in one click, browse them in a database-backed list, and perform full edit/delete CRUD operations.
+                        </p>
+                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>Create 10 posts instantly</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>List data from MySQL</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>Edit and delete records</li>
+                        </ul>
+                        <div class="mt-5 flex items-center text-xs font-semibold text-pink-600 transition group-hover:text-pink-500 dark:text-pink-400">
+                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+                </a>
             </div>
         </main>
     </body>

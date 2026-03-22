@@ -93,6 +93,16 @@ class PostController extends Controller
             ->with('success', 'Post deleted successfully.');
     }
 
+    public function createDemoPosts(): RedirectResponse
+    {
+        Post::factory(10)->create([
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('posts.index')
+            ->with('success', '10 demo posts created successfully.');
+    }
+
     private function authorizeOwnership(Post $post): void
     {
         if ($post->user_id !== Auth::id()) {

@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/files/download/{id}', [FileController::class, 'download'])->name('files.download');
     Route::delete('/files/{id}', [FileController::class, 'destroy'])->name('files.destroy');
 
+    Route::post('/posts/demo-create', [PostController::class, 'createDemoPosts'])->name('posts.demo.create');
     Route::resource('posts', PostController::class);
 
 });

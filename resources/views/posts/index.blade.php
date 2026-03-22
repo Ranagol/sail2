@@ -13,7 +13,16 @@
                 </div>
             @endif
 
-            <div class="flex justify-end">
+            <div class="flex flex-wrap items-center justify-end gap-3">
+                <form method="POST" action="{{ route('posts.demo.create') }}">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+                    >
+                        Create 10 Demo Posts
+                    </button>
+                </form>
                 <a
                     href="{{ route('posts.create') }}"
                     class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"

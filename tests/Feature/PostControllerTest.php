@@ -68,6 +68,16 @@ class PostControllerTest extends TestCase
         ]);
     }
 
+    public function test_create_demo_posts_creates_ten_posts_for_authenticated_user(): void
+    {
+        $response = $this->actingAs($this->user)->post(route('posts.demo.create'));
+
+        $response->assertRedirect(route('posts.index'));
+        $response->assertSessionHas('success', '10 demo posts created successfully.');
+        $this->assertDatabaseCount('posts', 10);
+        $this->assertEquals(10, Post::query()->where('user_id', $this->user->id)->count());
+    }
+
     public function test_store_validates_required_fields(): void
     {
         $response = $this->actingAs($this->user)
@@ -171,6 +181,7 @@ class PostControllerTest extends TestCase
         $this->get(route('posts.index'))->assertRedirect(route('login'));
         $this->get(route('posts.create'))->assertRedirect(route('login'));
         $this->post(route('posts.store'), $this->validPayload())->assertRedirect(route('login'));
+        $this->post(route('posts.demo.create'))->assertRedirect(route('login'));
         $this->get(route('posts.show', $post))->assertRedirect(route('login'));
         $this->get(route('posts.edit', $post))->assertRedirect(route('login'));
         $this->put(route('posts.update', $post), $this->validPayload())->assertRedirect(route('login'));
