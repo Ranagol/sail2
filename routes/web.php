@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueueDemoController;
 use App\Http\Controllers\RedisCacheController;
@@ -47,6 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/files', [FileController::class, 'store'])->name('files.store');
     Route::get('/files/download/{id}', [FileController::class, 'download'])->name('files.download');
     Route::delete('/files/{id}', [FileController::class, 'destroy'])->name('files.destroy');
+
+    Route::resource('posts', PostController::class);
 
 });
 
