@@ -10,25 +10,7 @@
     </head>
     <body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
 
-        {{-- Top nav --}}
-        <nav class="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
-            <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-                <span class="text-base font-bold tracking-tight text-slate-800 dark:text-slate-100">
-                    {{ config('app.name', 'Laravel') }}
-                    <span class="ml-2 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-700 dark:text-slate-400">demo playground</span>
-                </span>
-                <div class="flex items-center gap-3 text-sm">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="rounded-lg border border-slate-200 bg-white px-4 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="font-medium text-slate-600 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100">Log in</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="rounded-lg bg-slate-900 px-4 py-1.5 font-medium text-white transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-white">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            </div>
-        </nav>
+        @include('layouts.navigation')
 
         <main class="mx-auto max-w-5xl px-6 py-12">
 
