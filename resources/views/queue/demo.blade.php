@@ -50,12 +50,17 @@
                         @csrf
                         <input type="hidden" name="count" value="100">
                         <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Dispatches 100 jobs per click.</p>
-                        <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-500 dark:hover:bg-violet-400">
+                        <button type="submit" @disabled($pendingJobsCount > 0) class="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:text-slate-100 dark:hover:bg-violet-400 dark:disabled:bg-slate-600 dark:disabled:text-slate-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
                             Dispatch
                         </button>
+                        @if ($pendingJobsCount > 0)
+                            <p class="text-sm font-medium text-amber-700 dark:text-amber-300">
+                                Wait until the current queued jobs finish processing.
+                            </p>
+                        @endif
                     </form>
                 </div>
 
