@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchitectureController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/architecture', [ArchitectureController::class, 'index'])->name('architecture');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
