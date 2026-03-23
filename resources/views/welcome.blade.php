@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'Laravel') }} — Demo Overview</title>
+        <title>{{ config('app.name', 'Laravel') }} — AWS Demo Overview</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -16,10 +16,26 @@
 
             {{-- Hero --}}
             <div class="mb-10 text-center">
-                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">Laravel Feature Playground</h1>
+                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
+                    Laravel AWS Demo
+                </h1>
+
                 <p class="mt-3 text-base text-slate-500 dark:text-slate-400">
-                    A hands-on demo app covering the core Laravel features below.<br>
-                    Click any card to explore and experiment.
+                    A Laravel application deployed on AWS.<br>
+                    Demonstrating sessions, caching, queues, storage, and database integration.
+                </p>
+
+                {{-- AWS Stack badges --}}
+                <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">EC2</span>
+                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">RDS (MySQL)</span>
+                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">ElastiCache (Redis)</span>
+                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">S3</span>
+                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">VPC</span>
+                </div>
+
+                <p class="mt-2 text-xs text-slate-400">
+                    Application hosted on EC2 within a VPC
                 </p>
             </div>
 
@@ -38,16 +54,11 @@
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Write, read, and delete a value in Laravel's server-side session. All actions happen on a single URL using the POST–Redirect–GET pattern.
+                            Write, read, and delete a value in Laravel's server-side session using the PRG pattern.
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>Session store & retrieval</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>Flash messages</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-sky-400"></span>PRG redirect pattern</li>
-                        </ul>
-                        <div class="mt-5 flex items-center text-xs font-semibold text-sky-600 transition group-hover:text-sky-500 dark:text-sky-400">
-                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </div>
+                        <p class="mt-3 text-xs text-slate-400">
+                            Backed by AWS ElastiCache (Redis)
+                        </p>
                     </div>
                 </a>
 
@@ -63,16 +74,11 @@
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            See the speed gap between a cold MySQL query and a warm Redis cache hit. Timings are measured live and a speedup factor is shown.
+                            Compare cold MySQL queries with cached Redis responses and observe performance gains.
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-orange-400"></span>Cache::remember() pattern</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-orange-400"></span>Cold vs warm request timing</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-orange-400"></span>Redis as cache driver</li>
-                        </ul>
-                        <div class="mt-5 flex items-center text-xs font-semibold text-orange-600 transition group-hover:text-orange-500 dark:text-orange-400">
-                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </div>
+                        <p class="mt-3 text-xs text-slate-400">
+                            Powered by AWS ElastiCache (Redis)
+                        </p>
                     </div>
                 </a>
 
@@ -88,16 +94,11 @@
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Dispatch email jobs onto the Redis queue and watch them pile up. Explains the full lifecycle: dispatch → queue → worker → done (or failed).
+                            Dispatch jobs and process them asynchronously using Laravel queues.
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-violet-400"></span>Queued jobs with ShouldQueue</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-violet-400"></span>Pending & failed job counts</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-violet-400"></span>queue:work / queue:retry</li>
-                        </ul>
-                        <div class="mt-5 flex items-center text-xs font-semibold text-violet-600 transition group-hover:text-violet-500 dark:text-violet-400">
-                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </div>
+                        <p class="mt-3 text-xs text-slate-400">
+                            Queue driver: AWS ElastiCache (Redis)
+                        </p>
                     </div>
                 </a>
 
@@ -113,20 +114,15 @@
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Upload files to S3-compatible storage, list them, download them, and delete them. Requires authentication to protect the upload area.
+                            Upload, list, download, and delete files using cloud storage.
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>S3 / local disk storage</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Upload, download & delete</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>Auth-protected routes</li>
-                        </ul>
-                        <div class="mt-5 flex items-center text-xs font-semibold text-emerald-600 transition group-hover:text-emerald-500 dark:text-emerald-400">
-                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </div>
+                        <p class="mt-3 text-xs text-slate-400">
+                            Stored in AWS S3
+                        </p>
                     </div>
                 </a>
 
-                {{-- Database / Posts CRUD --}}
+                {{-- Database --}}
                 <a href="{{ route('posts.index') }}" class="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
                     <div class="bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-600 px-6 py-5">
                         <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/20">
@@ -138,21 +134,15 @@
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Generate 10 demo posts in one click, browse them in a database-backed list, and perform full edit/delete CRUD operations.
+                            Perform CRUD operations on posts stored in a relational database.
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>Create 10 posts instantly</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>List data from MySQL</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-pink-400"></span>Edit and delete records</li>
-                        </ul>
-                        <div class="mt-5 flex items-center text-xs font-semibold text-pink-600 transition group-hover:text-pink-500 dark:text-pink-400">
-                            Open demo <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                        </div>
+                        <p class="mt-3 text-xs text-slate-400">
+                            Database: AWS RDS (MySQL)
+                        </p>
                     </div>
                 </a>
+
             </div>
         </main>
     </body>
 </html>
-
-
