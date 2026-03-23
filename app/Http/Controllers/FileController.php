@@ -23,7 +23,9 @@ class FileController extends Controller
     // Show upload form
     public function create(): View
     {
-        return view('files.create');
+        $files = File::where('user_id', Auth::id())->get();
+
+        return view('files.index', compact('files'));
     }
 
     // Handle file upload

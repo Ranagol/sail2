@@ -42,12 +42,13 @@ class FileControllerTest extends TestCase
         $this->assertCount(0, $response->viewData('files'));
     }
 
-    public function test_create_shows_upload_form(): void
+    public function test_create_shows_merged_files_page(): void
     {
         $response = $this->actingAs($this->user)->get(route('files.create'));
 
         $response->assertOk();
-        $response->assertViewIs('files.create');
+        $response->assertViewIs('files.index');
+        $response->assertViewHas('files');
     }
 
     public function test_download_forbids_unauthorized_user(): void

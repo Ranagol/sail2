@@ -13,13 +13,44 @@
                 </div>
             @endif
 
-            <div class="flex justify-end">
-                <a
-                    href="{{ route('files.create') }}"
-                    class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-                >
-                    Upload New File
-                </a>
+            @if ($errors->any())
+                <div class="rounded-md bg-red-100 p-4 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100">Upload File</h3>
+                    <form action="{{ route('files.store') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4">
+                        @csrf
+
+                        <div>
+                            <label for="file" class="mb-2 block text-sm font-medium">Select file</label>
+                            <input
+                                id="file"
+                                name="file"
+                                type="file"
+                                required
+                                class="block w-full rounded-md border-gray-300 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                            >
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">Maximum size: 5 MB</p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button
+                                type="submit"
+                                class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                            >
+                                Upload
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
