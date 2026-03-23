@@ -72,68 +72,7 @@
                 <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Follow a job from dispatch to completion.</p>
             </div>
 
-            {{-- Pipeline diagram --}}
-            <div class="overflow-x-auto px-6 pb-2">
-                <div class="flex min-w-max items-stretch gap-0">
 
-                    {{-- Step 1 --}}
-                    <div class="flex flex-col items-center">
-                        <div class="flex h-14 w-36 items-center justify-center rounded-xl bg-violet-100 text-center text-xs font-semibold text-violet-800 dark:bg-violet-900/40 dark:text-violet-200 px-2">
-                            Your browser calls<br><code class="text-[11px]">POST /queue-testing</code>
-                        </div>
-                        <div class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">① dispatch</div>
-                    </div>
-
-                    <div class="flex items-center px-2 text-slate-300 dark:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </div>
-
-                    {{-- Step 2 --}}
-                    <div class="flex flex-col items-center">
-                        <div class="flex h-14 w-36 items-center justify-center rounded-xl bg-amber-100 text-center text-xs font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 px-2">
-                            Job serialised &amp;<br>pushed to <strong>Redis</strong>
-                        </div>
-                        <div class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">② queued</div>
-                    </div>
-
-                    <div class="flex items-center px-2 text-slate-300 dark:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </div>
-
-                    {{-- Step 3 --}}
-                    <div class="flex flex-col items-center">
-                        <div class="flex h-14 w-36 items-center justify-center rounded-xl bg-sky-100 text-center text-xs font-semibold text-sky-800 dark:bg-sky-900/40 dark:text-sky-200 px-2">
-                            <code class="text-[11px]">queue:work</code><br>picks up the job
-                        </div>
-                        <div class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">③ processing</div>
-                    </div>
-
-                    <div class="flex items-center px-2 text-slate-300 dark:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </div>
-
-                    {{-- Step 4a --}}
-                    <div class="flex flex-col items-center">
-                        <div class="flex h-14 w-36 items-center justify-center rounded-xl bg-emerald-100 text-center text-xs font-semibold text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200 px-2">
-                            Email sent ✓<br>job removed from queue
-                        </div>
-                        <div class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">④ done</div>
-                    </div>
-
-                    <div class="flex items-center px-2 text-slate-300 dark:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </div>
-
-                    {{-- Step 4b --}}
-                    <div class="flex flex-col items-center">
-                        <div class="flex h-14 w-36 items-center justify-center rounded-xl bg-rose-100 text-center text-xs font-semibold text-rose-800 dark:bg-rose-900/40 dark:text-rose-200 px-2">
-                            Exception thrown →<br>logged to <code class="text-[11px]">failed_jobs</code>
-                        </div>
-                        <div class="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">④ (or failed)</div>
-                    </div>
-
-                </div>
-            </div>
 
             {{-- Step explanations --}}
             <div class="px-6 py-5">
