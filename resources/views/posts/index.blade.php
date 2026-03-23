@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ showConfirmDelete: false }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             @if (session('success'))
                 <div class="rounded-md bg-green-100 p-4 text-green-700 dark:bg-green-900/40 dark:text-green-300">
@@ -29,16 +29,49 @@
                 >
                     Create Post
                 </a>
-                <form method="POST" action="{{ route('posts.destroy-all') }}" onsubmit="return confirm('Delete all your posts? This cannot be undone.');">
+                <form
+                    method="POST"
+                    action="{{ route('posts.destroy-all') }}"
+                    id="delete-all-form"
+                >
                     @csrf
                     @method('DELETE')
                     <button
-                        type="submit"
+                        type="button"
+                        @click="showConfirmDelete = true"
                         class="inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
                     >
                         Delete All Posts
                     </button>
                 </form>
+            </div>
+
+            <!-- Delete All Confirmation Modal -->
+            <div
+                x-show="showConfirmDelete"
+                x-cloak
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                @click.self="showConfirmDelete = false"
+            >
+                <div class="rounded-lg bg-amber-50 p-6 shadow-lg dark:bg-gray-800">
+                    <p class="text-gray-900 dark:text-gray-100">Delete all your posts? This cannot be undone.</p>
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button
+                            @click="showConfirmDelete = false"
+                            type="button"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 dark:border-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            @click="document.getElementById('delete-all-form').submit()"
+                            type="button"
+                            class="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-500"
+                        >
+                            Delete All
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
