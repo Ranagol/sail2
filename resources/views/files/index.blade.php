@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ showDeleteModal: false, deleteAction: '' }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             @if (session('success'))
                 <div class="rounded-md bg-green-100 p-4 text-green-700 dark:bg-green-900/40 dark:text-green-300">
@@ -89,11 +89,13 @@
                                                         Download
                                                     </a>
 
-                                                    <form method="POST" action="{{ route('files.destroy', $file->id) }}" onsubmit="return confirm('Delete this file?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-red-600 hover:text-red-500 dark:text-red-400">Delete</button>
-                                                    </form>
+                                                    <button
+                                                        type="button"
+                                                        @click="deleteAction = '{{ route('files.destroy', $file->id) }}'; showDeleteModal = true"
+                                                        class="text-red-600 hover:text-red-500 dark:text-red-400"
+                                                    >
+                                                        Delete
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -102,6 +104,36 @@
                             </table>
                         </div>
                     @endif
+                </div>
+            </div>
+
+            <div
+                x-show="showDeleteModal"
+                x-cloak
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+                @click.self="showDeleteModal = false"
+            >
+                <div class="w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl border border-amber-200 bg-amber-50 p-6 shadow-xl dark:border-amber-700/60 dark:bg-gray-800">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100">Delete File</h3>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Are you sure you want to delete this file? This cannot be undone.</p>
+
+                    <form x-bind:action="deleteAction" method="POST" class="mt-5 flex items-center justify-end gap-3">
+                        @csrf
+                        @method('DELETE')
+                        <button
+                            @click="showDeleteModal = false"
+                            type="button"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500"
+                        >
+                            Delete File
+                        </button>
+                    </form>
                 </div>
             </div>
 
