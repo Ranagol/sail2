@@ -157,15 +157,17 @@
                 </ol>
             </div>
 
-            {{-- Worker command box --}}
-            <div class="mx-6 mb-6 rounded-xl border border-slate-200 bg-slate-900 px-4 py-4 dark:border-slate-700">
-                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Run the worker</p>
-                <code class="block text-sm text-emerald-400">$ sail artisan queue:work</code>
-                <p class="mt-3 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Retry all failed jobs</p>
-                <code class="block text-sm text-amber-400">$ sail artisan queue:retry all</code>
-                <p class="mt-3 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Flush the failed jobs table</p>
-                <code class="block text-sm text-rose-400">$ sail artisan queue:flush</code>
-            </div>
+            {{-- Worker command box (local only) --}}
+            @if (app()->environment('local'))
+                <div class="mx-6 mb-6 rounded-xl border border-slate-200 bg-slate-900 px-4 py-4 dark:border-slate-700">
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Run the worker</p>
+                    <code class="block text-sm text-emerald-400">$ sail artisan queue:work</code>
+                    <p class="mt-3 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Retry all failed jobs</p>
+                    <code class="block text-sm text-amber-400">$ sail artisan queue:retry all</code>
+                    <p class="mt-3 mb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">Flush the failed jobs table</p>
+                    <code class="block text-sm text-rose-400">$ sail artisan queue:flush</code>
+                </div>
+            @endif
         </section>
 
         {{-- Recent failures --}}

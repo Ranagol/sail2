@@ -260,11 +260,13 @@ jobs:
           script: |
             set -e
             cd ${{ env.EC2_APP_PATH }}
+
             if command -v sudo >/dev/null 2>&1; then
               sudo chmod -R u+rwX,g+rwX,o+rwX bootstrap/cache storage || true
             else
               chmod -R u+rwX,g+rwX,o+rwX bootstrap/cache storage || true
             fi
+
             git fetch origin main
             git reset --hard origin/main
             composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader

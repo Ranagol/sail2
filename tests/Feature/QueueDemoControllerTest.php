@@ -56,12 +56,12 @@ class QueueDemoControllerTest extends TestCase
         Queue::assertPushed(SendTestEmailJob::class, 100);
     }
 
-    public function test_index_shows_worker_command_instructions(): void
+    public function test_index_hides_worker_command_instructions_outside_local(): void
     {
         $response = $this->get(route('queue.demo'));
 
-        $response->assertSee('queue:work');
-        $response->assertSee('queue:retry all');
-        $response->assertSee('queue:flush');
+        $response->assertDontSee('Run the worker');
+        $response->assertDontSee('Retry all failed jobs');
+        $response->assertDontSee('Flush the failed jobs table');
     }
 }
