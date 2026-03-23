@@ -25,5 +25,8 @@ class SendTestEmailJob implements ShouldQueue
     public function handle(): void
     {
         Mail::to('test@example.com')->send(new TestMail);
+
+        // Simulate some processing time for the job, so we job executiorn is slow enough to be seen in visualisation.
+        usleep(500_000);
     }
 }
