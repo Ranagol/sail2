@@ -20,9 +20,9 @@ class FileFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'original_name' => $this->faker->word().'.txt',
+            'original_name' => fake()->word().'.txt',
             'path' => 'uploads/'.rand(1, 100).'/'.md5(random_bytes(16)).'.txt',
-            'size' => $this->faker->numberBetween(1024, 5120 * 1024),
+            'size' => fake()->numberBetween(1024, 5120 * 1024),
         ];
     }
 }
