@@ -24,22 +24,13 @@
             AWS Architecture Overview
         </h1>
 
-        <p class="mt-4 text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+        <p class="mt-4 mb-6 text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
             This application is deployed on AWS using a modular architecture.
             Each service has a clear responsibility, ensuring scalability, performance, and maintainability.
         </p>
     </div>
 
-    {{-- Diagram --}}
-    <div class="mb-16">
-        <div class="rounded-2xl mb-6 overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition">
-            <img
-                src="{{ asset('images/aws-architecture.png') }}"
-                alt="AWS Architecture Diagram"
-                class="w-full h-auto"
-            >
-        </div>
-    </div>
+
 
     {{-- Services --}}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -101,6 +92,17 @@
                 improving security and isolation.
             </p>
         </div>
+
+        {{-- Diagram --}}
+    <div class="mb-16">
+        <div class="rounded-2xl mb-6 overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition">
+            <img
+                src="{{ asset('images/aws-architecture.png') }}"
+                alt="AWS Architecture Diagram"
+                class="w-full h-auto"
+            >
+        </div>
+    </div>
 
     </div>
 
