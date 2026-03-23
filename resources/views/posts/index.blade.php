@@ -29,6 +29,16 @@
                 >
                     Create Post
                 </a>
+                <form method="POST" action="{{ route('posts.destroy-all') }}" onsubmit="return confirm('Delete all your posts? This cannot be undone.');">
+                    @csrf
+                    @method('DELETE')
+                    <button
+                        type="submit"
+                        class="inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500"
+                    >
+                        Delete All Posts
+                    </button>
+                </form>
             </div>
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

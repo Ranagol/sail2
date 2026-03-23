@@ -12,6 +12,20 @@ use Illuminate\View\View;
 class PostController extends Controller
 {
     /**
+     * @var list<string>
+     */
+    private array $latinWords = [
+        'lorem', 'ipsum', 'dolor', 'sit', 'amet',
+        'consectetur', 'adipiscing', 'elit', 'sed', 'do',
+        'eiusmod', 'tempor', 'incididunt', 'ut', 'labore',
+        'et', 'dolore', 'magna', 'aliqua', 'enim',
+        'ad', 'minim', 'veniam', 'quis', 'nostrud',
+        'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip',
+        'ex', 'ea', 'commodo', 'consequat', 'duis',
+        'aute', 'irure', 'in', 'reprehenderit', 'voluptate',
+    ];
+
+    /**
      * Display a listing of the resource.
      */
     public function index(): View
@@ -95,12 +109,32 @@ class PostController extends Controller
 
     public function createDemoPosts(): RedirectResponse
     {
-        Post::factory(10)->create([
-            'user_id' => Auth::id(),
-        ]);
+        for ($i = 0; $i < 10; $i++) {
+            $titleWords = $this->latinWords;
+            shuffle($titleWords);
+            $title = ucfirst(implode(' ', array_slice($titleWords, 0, random_int(3, 6))));
+
+            $contentWords = $this->latinWords;
+            shuffle($contentWords);
+            $content = ucfirst(implode(' ', array_slice($contentWords, 0, random_int(6, 10)))).'.';
+
+            Post::query()->create([
+                'user_id' => Auth::id(),
+                'title' => $title,
+                'content' => $content,
+            ]);
+        }
 
         return redirect()->route('posts.index')
             ->with('success', '10 demo posts created successfully.');
+    }
+
+    public function deleteAll(): RedirectResponse
+    {
+        Post::query()->where('user_id', Auth::id())->delete();
+
+        return redirect()->route('posts.index')
+            ->with('success', 'All posts deleted successfully.');
     }
 
     private function authorizeOwnership(Post $post): void

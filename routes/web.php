@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/files/{id}', [FileController::class, 'destroy'])->name('files.destroy');
 
     Route::post('/posts/demo-create', [PostController::class, 'createDemoPosts'])->name('posts.demo.create');
+    Route::delete('/posts', [PostController::class, 'deleteAll'])->name('posts.destroy-all');
     Route::resource('posts', PostController::class);
 
 });
