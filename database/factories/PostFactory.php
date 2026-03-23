@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Post;
 use App\Models\User;
-use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Post>
@@ -19,12 +19,10 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = FakerFactory::create();
-
         return [
             'user_id' => User::factory(),
-            'title' => $faker->sentence(6),
-            'content' => $faker->paragraph(4),
+            'title' => 'Post '.Str::title(Str::random(12)),
+            'content' => Str::repeat(Str::random(24).' ', 5),
         ];
     }
 }
