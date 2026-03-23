@@ -1,5 +1,5 @@
 <x-demo-layout>
-    <div class="w-full space-y-6" data-pending-jobs-count="{{ (int) $pendingJobsCount }}">
+    <div class="w-full space-y-6">
 
         {{-- Header --}}
         <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
@@ -139,61 +139,3 @@
         </div>
     </div>
 </x-demo-layout>
-
-<script>
-
-    // Run this logic once the HTML document has been fully loaded and parsed.
-    document.addEventListener('DOMContentLoaded', function () {
-
-        // Find the root element that stores the current pending jobs count as a data attribute.
-        const root = document.querySelector('[data-pending-jobs-count]');
-
-        // If the root element does not exist, stop immediately because there is nothing to process.
-        if (!root) {
-
-            // Exit early when the expected element is missing.
-            return;
-        }
-
-        // Read the pending jobs count from the data attribute and convert it to a number.
-        const pendingJobsCount = Number(root.dataset.pendingJobsCount ?? 0);
-
-        // Check whether this page load was marked to watch queue progress via query string.
-        const shouldWatchQueue = @json(request()->boolean('watch'));
-
-        // Define the sessionStorage key used to store the auto-refresh expiration timestamp.
-        const storageKey = 'queue_demo_auto_refresh_until';
-
-        // Capture the current timestamp in milliseconds.
-        const now = Date.now();
-
-        // If this load should watch the queue and there are pending jobs, start a 30-second refresh window.
-        if (shouldWatchQueue && pendingJobsCount > 0) {
-
-            // Save the expiration timestamp (now + 30 seconds) in sessionStorage.
-            sessionStorage.setItem(storageKey, String(now + 30000));
-        }
-
-        // Read the stored refresh expiration time from sessionStorage.
-        const refreshUntil = Number(sessionStorage.getItem(storageKey) ?? 0);
-
-        // If jobs are still pending and the refresh window has not expired, reload the page in 1 second.
-        if (pendingJobsCount > 0 && refreshUntil > now) {
-
-            // Schedule a one-second delayed full page refresh.
-            setTimeout(function () {
-
-                // Reload the current page so the pending count updates from server-side data.
-                window.location.reload();
-
-            // Use 1000 milliseconds (1 second) as the refresh interval.
-            }, 1000);
-
-            // Stop executing further logic in this run.
-            return;
-        }
-
-        // If no refresh is needed anymore, remove the stored refresh timer key.
-        sessionStorage.removeItem(storageKey);
-    });
-</script>

@@ -47,7 +47,8 @@ class QueueDemoControllerTest extends TestCase
         $response = $this->post(route('queue.dispatch'), ['count' => 100]);
 
         // We assert that the user is redirected back to the queue demo page
-        $response->assertRedirect(route('queue.demo', ['watch' => 1]));
+        $response->assertRedirectContains(route('queue.demo', ['watch' => 1], false));
+        $this->assertStringContainsString('started=', (string) $response->headers->get('Location'));
 
         // We assert that a session flash message is set with the expected status message.
         $response->assertSessionHas('status', 'Dispatched 100 job(s) to the Redis queue.');

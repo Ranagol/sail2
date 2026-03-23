@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendTestEmailJob;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\View\View;
@@ -17,16 +18,35 @@ use Illuminate\View\View;
  */
 class QueueDemoController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View|Response
     {
-        return view('queue.demo', [
-            'pendingJobsCount' => Queue::size(),
-            'failedJobsCount' => DB::table('failed_jobs')->count(),
+        $pendingJobsCount = Queue::size();
+        $failedJobsCount = DB::table('failed_jobs')->count();
+
+        $view = view('queue.demo', [
+            'pendingJobsCount' => $pendingJobsCount,
+            'failedJobsCount' => $failedJobsCount,
             'recentFailedJobs' => DB::table('failed_jobs')
                 ->orderByDesc('failed_at')
                 ->limit(5)
                 ->get(['id', 'queue', 'failed_at', 'exception']),
         ]);
+
+        $watchStartedAt = (int) $request->query('started', 0);
+        $watchDurationInSeconds = 30;
+        $watchNotExpired = $watchStartedAt > 0 && (now()->timestamp - $watchStartedAt) < $watchDurationInSeconds;
+        $shouldRefresh = $request->boolean('watch') && $pendingJobsCount > 0 && $watchNotExpired;
+
+        if (! $shouldRefresh) {
+            return $view;
+        }
+
+        $refreshUrl = route('queue.demo', [
+            'watch' => 1,
+            'started' => $watchStartedAt,
+        ]);
+
+        return response($view)->header('Refresh', "1;url={$refreshUrl}");
     }
 
     public function dispatch(Request $request): RedirectResponse
@@ -38,7 +58,10 @@ class QueueDemoController extends Controller
         }
 
         return redirect()
-            ->route('queue.demo', ['watch' => 1])
+            ->route('queue.demo', [
+                'watch' => 1,
+                'started' => now()->timestamp,
+            ])
             ->with('status', "Dispatched {$count} job(s) to the Redis queue.");
     }
 }
