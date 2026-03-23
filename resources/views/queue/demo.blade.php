@@ -1,5 +1,5 @@
 <x-demo-layout>
-    <div class="w-full space-y-6">
+    <div class="w-full space-y-6" data-pending-jobs-count="{{ (int) $pendingJobsCount }}">
 
         {{-- Header --}}
         <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
@@ -10,8 +10,7 @@
                     We simulate here sending 100 emails, by clicling on the 'Dispatch' button. Every
                     email is one job to be executed.These jobs are stored in a Redis queue. We can
                     follow the number of dispatched jobs in the 'Pending in Redis queue'. These jobs
-                    will be executed in the Redis queue one by one. With clicking on the 'Refresh stats'
-                    button we can see the updated number of pending jobs and failed jobs.
+                    will be executed in the Redis queue one by one.
 
                 </p>
             </div>
@@ -19,11 +18,11 @@
             <div class="space-y-6 px-6 py-6">
 
                 {{-- Status flash --}}
-                @if (session('status'))
+                <!-- @if (session('status'))
                     <div class="rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
                         {{ session('status') }}
                     </div>
-                @endif
+                @endif -->
 
                 {{-- Live stats --}}
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -57,12 +56,6 @@
                             </svg>
                             Dispatch
                         </button>
-                        <a href="{{ route('queue.demo') }}" class="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M4 9a9 9 0 0115.447-3.5M20 15a9 9 0 01-15.447 3.5" />
-                            </svg>
-                            Refresh stats
-                        </a>
                     </form>
                 </div>
 
@@ -146,3 +139,61 @@
         </div>
     </div>
 </x-demo-layout>
+
+<script>
+
+    // Run this logic once the HTML document has been fully loaded and parsed.
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Find the root element that stores the current pending jobs count as a data attribute.
+        const root = document.querySelector('[data-pending-jobs-count]');
+
+        // If the root element does not exist, stop immediately because there is nothing to process.
+        if (!root) {
+
+            // Exit early when the expected element is missing.
+            return;
+        }
+
+        // Read the pending jobs count from the data attribute and convert it to a number.
+        const pendingJobsCount = Number(root.dataset.pendingJobsCount ?? 0);
+
+        // Check whether this page load includes a dispatch success flash message from Laravel.
+        const hasDispatchStatus = @json((bool) session('status'));
+
+        // Define the sessionStorage key used to store the auto-refresh expiration timestamp.
+        const storageKey = 'queue_demo_auto_refresh_until';
+
+        // Capture the current timestamp in milliseconds.
+        const now = Date.now();
+
+        // If the user just dispatched jobs and there are pending jobs, start a 30-second refresh window.
+        if (hasDispatchStatus && pendingJobsCount > 0) {
+
+            // Save the expiration timestamp (now + 30 seconds) in sessionStorage.
+            sessionStorage.setItem(storageKey, String(now + 30000));
+        }
+
+        // Read the stored refresh expiration time from sessionStorage.
+        const refreshUntil = Number(sessionStorage.getItem(storageKey) ?? 0);
+
+        // If jobs are still pending and the refresh window has not expired, reload the page in 1 second.
+        if (pendingJobsCount > 0 && refreshUntil > now) {
+
+            // Schedule a one-second delayed full page refresh.
+            setTimeout(function () {
+
+                // Reload the current page so the pending count updates from server-side data.
+                window.location.reload();
+
+            // Use 1000 milliseconds (1 second) as the refresh interval.
+            }, 1000);
+
+            // Stop executing further logic in this run.
+            return;
+        }
+
+        // If no refresh is needed anymore, remove the stored refresh timer key.
+        sessionStorage.removeItem(storageKey);
+    });
+</script>
