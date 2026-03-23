@@ -50,23 +50,24 @@
             <div
                 x-show="showConfirmDelete"
                 x-cloak
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
                 @click.self="showConfirmDelete = false"
             >
-                <div class="rounded-lg bg-amber-50 p-6 shadow-lg dark:bg-gray-800">
-                    <p class="text-gray-900 dark:text-gray-100">Delete all your posts? This cannot be undone.</p>
+                <div class="w-[22rem] max-w-[calc(100vw-2rem)] rounded-xl border border-amber-200 bg-amber-50 p-6 shadow-xl dark:border-amber-700/60 dark:bg-gray-800">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100">Delete Posts</h3>
+                    <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">Delete all your posts? This cannot be undone.</p>
                     <div class="mt-4 flex justify-end gap-3">
                         <button
                             @click="showConfirmDelete = false"
                             type="button"
-                            class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 dark:border-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                         >
                             Cancel
                         </button>
                         <button
                             @click="document.getElementById('delete-all-form').submit()"
                             type="button"
-                            class="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-500"
+                            class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-500"
                         >
                             Delete All
                         </button>
