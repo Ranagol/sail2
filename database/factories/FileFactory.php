@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\File;
 use App\Models\User;
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,11 +19,13 @@ class FileFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = FakerFactory::create();
+
         return [
             'user_id' => User::factory(),
-            'original_name' => fake()->word().'.txt',
+            'original_name' => $faker->word().'.txt',
             'path' => 'uploads/'.rand(1, 100).'/'.md5(random_bytes(16)).'.txt',
-            'size' => fake()->numberBetween(1024, 5120 * 1024),
+            'size' => $faker->numberBetween(1024, 5120 * 1024),
         ];
     }
 }
