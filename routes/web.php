@@ -19,6 +19,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
+    // Will display the architecture diagram for the visitor with explanation.
     Route::get('/architecture', [ArchitectureController::class, 'index'])->name('architecture');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
