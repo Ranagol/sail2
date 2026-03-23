@@ -38,7 +38,7 @@ class QueueDemoController extends Controller
         }
 
         return redirect()
-            ->route('queue.demo')
+            ->route('queue.demo', ['watch' => 1])
             ->with('status', "Dispatched {$count} job(s) to the Redis queue.");
     }
 }

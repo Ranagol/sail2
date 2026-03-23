@@ -158,8 +158,8 @@
         // Read the pending jobs count from the data attribute and convert it to a number.
         const pendingJobsCount = Number(root.dataset.pendingJobsCount ?? 0);
 
-        // Check whether this page load includes a dispatch success flash message from Laravel.
-        const hasDispatchStatus = @json((bool) session('status'));
+        // Check whether this page load was marked to watch queue progress via query string.
+        const shouldWatchQueue = @json(request()->boolean('watch'));
 
         // Define the sessionStorage key used to store the auto-refresh expiration timestamp.
         const storageKey = 'queue_demo_auto_refresh_until';
@@ -167,8 +167,8 @@
         // Capture the current timestamp in milliseconds.
         const now = Date.now();
 
-        // If the user just dispatched jobs and there are pending jobs, start a 30-second refresh window.
-        if (hasDispatchStatus && pendingJobsCount > 0) {
+        // If this load should watch the queue and there are pending jobs, start a 30-second refresh window.
+        if (shouldWatchQueue && pendingJobsCount > 0) {
 
             // Save the expiration timestamp (now + 30 seconds) in sessionStorage.
             sessionStorage.setItem(storageKey, String(now + 30000));
