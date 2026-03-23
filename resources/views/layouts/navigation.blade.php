@@ -24,7 +24,7 @@
                     <x-nav-link :href="route('session.demo')" :active="request()->routeIs('session.*')">
                         {{ __('Session') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('queue.demo')" :active="request()->routeIs('queue.*')">
+                    <x-nav-link :href="route('redis.demo')" :active="request()->routeIs('redis.*')">
                         {{ __('Cache') }}
                     </x-nav-link>
                     <x-nav-link :href="route('queue.demo')" :active="request()->routeIs('queue.*')">
@@ -109,7 +109,7 @@
             <x-responsive-nav-link :href="route('session.demo')" :active="request()->routeIs('session.*')">
                 {{ __('Session') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('queue.demo')" :active="request()->routeIs('queue.*')">
+            <x-responsive-nav-link :href="route('redis.demo')" :active="request()->routeIs('redis.*')">
                 {{ __('Cache') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('queue.demo')" :active="request()->routeIs('queue.*')">
