@@ -4,7 +4,7 @@
         {{-- Header card --}}
         <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <div class="bg-gradient-to-r from-rose-500 via-orange-500 to-amber-500 px-6 py-6 text-white">
-                <p class="text-sm font-semibold uppercase tracking-[0.2em]">Redis Cache Demo</p>
+                <p class="text-sm font-semibold uppercase tracking-[0.2em]">Cache Demo with AWS Elasticache/Redis</p>
                 <h1 class="mt-2 text-2xl font-bold">See the speed difference yourself</h1>
                 <p class="mt-2 text-sm text-orange-100">
                     This page fetches <strong>{{ $usersCount }} users</strong> twice —

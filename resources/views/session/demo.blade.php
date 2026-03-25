@@ -7,7 +7,7 @@
         <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
             <div class="bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 px-6 py-6 text-white">
                 <p class="text-sm font-semibold uppercase tracking-[0.2em]">Session Demo</p>
-                <h1 class="mt-2 text-2xl font-bold">Store and read session data</h1>
+                <h1 class="mt-2 text-2xl font-bold">Store and read session data in AWS Elasticache/Redis</h1>
                 <p class="mt-2 text-sm text-sky-100">Try setting a value, then read it from the same browser session.</p>
             </div>
 

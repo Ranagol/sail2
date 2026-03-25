@@ -25,15 +25,6 @@
                     Demonstrating sessions, caching, queues, storage, and database integration.
                 </p>
 
-                {{-- AWS Stack badges --}}
-                <div class="mt-4 flex flex-wrap justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">EC2</span>
-                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">RDS (MySQL)</span>
-                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">ElastiCache (Redis)</span>
-                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">S3</span>
-                    <span class="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700">VPC</span>
-                </div>
-
                 <p class="mt-2 text-xs text-slate-400">
                     Application hosted on EC2 within a VPC
                 </p>
@@ -50,11 +41,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
                         </span>
-                        <h2 class="mt-3 text-lg font-bold text-white">Session Demo</h2>
+                        <h2 class="mt-3 text-lg font-bold text-white">Session Demo - AWS ElastiCache/Redis testing</h2>
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Write, read, and delete a value in Laravel's server-side session using the PRG pattern.
+                            Write, read, and delete a value in Laravel's server-side session.
                         </p>
                         <p class="mt-3 text-xs text-slate-400">
                             Backed by AWS ElastiCache (Redis)
@@ -70,7 +61,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                             </svg>
                         </span>
-                        <h2 class="mt-3 text-lg font-bold text-white">Redis Cache Demo</h2>
+                        <h2 class="mt-3 text-lg font-bold text-white">Redis Cache Demo - AWS ElastiCache/Redis testing</h2>
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
@@ -90,11 +81,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                             </svg>
                         </span>
-                        <h2 class="mt-3 text-lg font-bold text-white">Queue Demo</h2>
+                        <h2 class="mt-3 text-lg font-bold text-white">Queue Demo - AWS ElastiCache/Redis testing</h2>
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
-                            Dispatch jobs and process them asynchronously using Laravel queues.
+                            Dispatch jobs and process them.
                         </p>
                         <p class="mt-3 text-xs text-slate-400">
                             Queue driver: AWS ElastiCache (Redis)
@@ -110,7 +101,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                             </svg>
                         </span>
-                        <h2 class="mt-3 text-lg font-bold text-white">File Upload Demo</h2>
+                        <h2 class="mt-3 text-lg font-bold text-white">File Upload Demo - AWS S3 testing</h2>
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">
@@ -130,7 +121,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"/>
                             </svg>
                         </span>
-                        <h2 class="mt-3 text-lg font-bold text-white">Database Demo</h2>
+                        <h2 class="mt-3 text-lg font-bold text-white">Database Demo - AWS RDS (MySQL) testing</h2>
                     </div>
                     <div class="flex flex-1 flex-col px-6 py-5">
                         <p class="text-sm text-slate-600 dark:text-slate-300">

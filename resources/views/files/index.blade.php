@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('My Files') }}
+            {{ __('File storage demo with AWS S3') }}
         </h2>
     </x-slot>
 
