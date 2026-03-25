@@ -29,7 +29,7 @@ class RedisCacheControllerTest extends TestCase
         $response = $this->get(route('redis.demo'));
 
         $response->assertOk();
-        $response->assertSee('Redis Cache Demo');
+        $response->assertSee('Cache Demo with AWS Elasticache/Redis');
         $response->assertSee('1st request');
         $response->assertSee('2nd request');
     }
