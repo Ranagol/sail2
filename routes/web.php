@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('/queue-testing', [QueueDemoController::class, 'index'])->name('queue.demo');
     Route::post('/queue-testing', [QueueDemoController::class, 'dispatch'])->name('queue.dispatch');
+    // API endpoint for live pending jobs count
+    Route::get('/api/pending-jobs', [QueueDemoController::class, 'pendingJobsCount'])->name('queue.pending-jobs');
 
     // File upload download routes
     Route::get('/files', [FileController::class, 'index'])->name('files.index');
@@ -56,7 +58,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/demo-create', [PostController::class, 'createDemoPosts'])->name('posts.demo.create');
     Route::delete('/posts', [PostController::class, 'deleteAll'])->name('posts.destroy-all');
     Route::resource('posts', PostController::class);
-
 });
 
 require __DIR__.'/auth.php';

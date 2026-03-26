@@ -38,44 +38,15 @@ class QueueDemoControllerTest extends TestCase
         $response->assertSee('How it works');
     }
 
-    public function test_index_disables_dispatch_button_when_jobs_are_pending(): void
+    public function test_dispatch_pushes_100_jobs_and_returns_json(): void
     {
-        Queue::shouldReceive('size')->once()->andReturn(5);
-
-        $response = $this->get(route('queue.demo'));
+        $response = $this->postJson(route('queue.dispatch'));
 
         $response->assertOk();
-        $response->assertSee('<button type="submit" disabled', false);
-        $response->assertSee('Wait until the current queued jobs finish processing.');
-    }
+        $response->assertJson([
+            'status' => 'Dispatched 100 job(s)',
+        ]);
 
-    public function test_index_keeps_dispatch_button_enabled_when_no_jobs_are_pending(): void
-    {
-        Queue::shouldReceive('size')->once()->andReturn(0);
-
-        $response = $this->get(route('queue.demo'));
-
-        $response->assertOk();
-        $response->assertDontSee('<button type="submit" disabled', false);
-        $response->assertDontSee('Wait until the current queued jobs finish processing.');
-    }
-
-    public function test_dispatch_pushes_jobs_onto_queue_and_redirects(): void
-    {
-        /**
-         * Simulates a user submitting a form. Count is the number of jobs, 100. So, user send in the
-         * form the number 100. He wants to dispatch 100 jobs to the queue.
-         */
-        $response = $this->post(route('queue.dispatch'), ['count' => 100]);
-
-        // We assert that the user is redirected back to the queue demo page
-        $response->assertRedirect(route('queue.demo'));
-        $response->assertSessionHas('start_time', fn (mixed $value): bool => is_numeric($value));
-
-        // We assert that a session flash message is set with the expected status message.
-        $response->assertSessionHas('status', 'Dispatched 100 job(s) to the Redis queue.');
-
-        // We assert that exactly 5 SendTestEmailJob jobs were pushed onto the queue.
         Queue::assertPushed(SendTestEmailJob::class, 100);
     }
 
