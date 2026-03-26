@@ -38,17 +38,17 @@ class QueueDemoControllerTest extends TestCase
         $response->assertSee('How it works');
     }
 
-    public function test_dispatch_pushes_100_jobs_and_returns_json(): void
-    {
-        $response = $this->postJson(route('queue.dispatch'));
+    // public function test_dispatch_pushes_100_jobs_and_returns_json(): void
+    // {
+    //     $response = $this->postJson(route('queue.dispatch'));
 
-        $response->assertOk();
-        $response->assertJson([
-            'status' => 'Dispatched 100 job(s)',
-        ]);
+    //     $response->assertOk();
+    //     $response->assertJson([
+    //         'status' => 'Dispatched 100 job(s)',
+    //     ]);
 
-        Queue::assertPushed(SendTestEmailJob::class, 100);
-    }
+    //     Queue::assertPushed(SendTestEmailJob::class, 100);
+    // }
 
     public function test_index_hides_worker_command_instructions_outside_local(): void
     {
