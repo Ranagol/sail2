@@ -1,4 +1,3 @@
-use App\Jobs\SendTestEmailJob;
 <x-demo-layout>
     <div 
         x-data="pendingJobsComponent" 
@@ -100,6 +99,9 @@ use App\Jobs\SendTestEmailJob;
                 // Maximum polling duration in seconds
                 maxSeconds: 60,
 
+                // The current interval ID of the setInterval proces, that sends the repeated requests
+                intervalId: null,
+
                 /**
                  * Fetch the current number of pending jobs
                  */
@@ -126,8 +128,11 @@ use App\Jobs\SendTestEmailJob;
                             },
                         });
 
-                        this
-                            .startProcess(); // Start repeated request sending after click on dispatch button
+                        // refresh state BEFORE starting sending repeated requests
+                        await this.getPendingJobsCount();
+
+                        this.startProcess(); // Start repeated request sending after click on dispatch button
+
                     } catch (error) {
                         console.error('Error dispatching jobs:', error);
                     }
@@ -140,20 +145,52 @@ use App\Jobs\SendTestEmailJob;
                 startProcess() {
                     this.secondsElapsed = 0; // reset counter
 
+                    /**
+                     * Clear any existing interval to avoid multiple intervals running simultaneously 
+                     * if dispatch button is clicked multiple times
+                     */
+                    if (this.intervalId) {
+                        clearInterval(this.intervalId);
+                        this.intervalId = null;
+                    }
+
                     // immediate first fetch so the user sees the count right away
                     this.getPendingJobsCount();
 
-                    const intervalId = setInterval(() => {
-                        this.getPendingJobsCount();
+                    this.intervalId = setInterval(async () => {
+                        await this.getPendingJobsCount();
                         this.secondsElapsed++;
 
-                        if (this.secondsElapsed >= this.maxSeconds || this.pendingJobsCount ===
-                            0) {
-                            clearInterval(intervalId); // stop sending repeated requests 
+                        if (this.secondsElapsed >= this.maxSeconds || this.pendingJobsCount === 0) {
+                            clearInterval(this.intervalId); // stop sending repeated requests 
+                            this.intervalId = null; // reset interval ID
                         }
                     }, 1000);
-                }
+                },
+
+                init() {
+                    this.bootstrap();
+                },
+                
+
+                /**
+                 * Initialize component by fetching the initial pending jobs count
+                 */
+                async bootstrap() {
+                    await this.getPendingJobsCount();
+
+                    if (this.pendingJobsCount > 0) {
+
+                        // Start sending repeated requests  if there are already pending jobs when component loads
+                        this.startProcess(); 
+                    }
+                },
+
             }));
         });
+
+
+
+
     </script>
 </x-demo-layout>

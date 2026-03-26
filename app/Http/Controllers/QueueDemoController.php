@@ -17,7 +17,7 @@ use Illuminate\View\View;
  */
 class QueueDemoController extends Controller
 {
-    private int $numberOfEmailsToSend = 100;
+    private int $numberOfEmailsToSend = 50;
 
     public function index(): View
     {
